@@ -8,30 +8,30 @@ const refs = {
 const { form, input, textarea } = refs;
 
 const FORM_FEEDBACK_KEY = 'feedback-form-state';
-const formData = {};
+let formData = {};
 formPopulate();
 form.addEventListener('submit', onFormSubmit);
 form.addEventListener('input', throttle(onFormInput, 500));
 
 function onFormSubmit(e) {
-    e.preventDefault();
+  e.preventDefault();
+  console.log(formData);
     e.target.reset();
     localStorage.removeItem(FORM_FEEDBACK_KEY);
 }
 
 function onFormInput(e) {
   formData[e.target.name] = e.target.value;
-  console.log(formData);
   const savedData = JSON.stringify(formData);
   localStorage.setItem(FORM_FEEDBACK_KEY, savedData)
 }
 
 function formPopulate() {
   const savedFormData = localStorage.getItem(FORM_FEEDBACK_KEY);
-  const parsedFormData = JSON.parse(savedFormData);
-  if (parsedFormData) {
-    input.value = parsedFormData.email;
-    textarea.value = parsedFormData.message;
+  if (!savedFormData) {
+    return;
   }
+  formData = JSON.parse(savedFormData);
+  Object.entries(formData).forEach(([name, value]) => (form[name].value = value));
 }
 

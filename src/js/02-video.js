@@ -12,4 +12,4 @@ function onPlayCurrentTime({seconds}) {
     localStorage.setItem(CURRENT_TIME_KEY, seconds)
 }
 
-iframePlayer.setCurrentTime(localStorage.getItem(CURRENT_TIME_KEY));
+iframePlayer.setCurrentTime(localStorage.getItem(CURRENT_TIME_KEY)  || 0);
